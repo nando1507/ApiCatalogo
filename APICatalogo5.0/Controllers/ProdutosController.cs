@@ -20,7 +20,6 @@ namespace APICatalogo5._0.Controllers
         {
             _context = context;
         }
-
         [HttpGet]
         public ActionResult<IEnumerable<Produto>> Get()
         {
@@ -35,7 +34,6 @@ namespace APICatalogo5._0.Controllers
             }
 
         }
-
         [HttpGet("{id}", Name = "ObterProduto")]
         public ActionResult<Produto> Get(int id)
         {
@@ -56,9 +54,8 @@ namespace APICatalogo5._0.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Erro ao Obter o Produto");
                 throw;
             }
-          
-        }
 
+        }
         [HttpPost]
         public ActionResult Post([FromBody] Produto produto)
         {
@@ -74,9 +71,8 @@ namespace APICatalogo5._0.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Erro ao adicionar nova Categorias");
                 throw;
             }
-            
-        }
 
+        }
         [HttpPut("{id}")]
         public ActionResult Put(int id, [FromBody] Produto produto)
         {
@@ -96,9 +92,8 @@ namespace APICatalogo5._0.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao atualizar o Produto {id}");
                 throw;
             }
-           
-        }
 
+        }
         [HttpDelete("{id}")]
         public ActionResult<Produto> Delete(int id)
         {
@@ -121,7 +116,7 @@ namespace APICatalogo5._0.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao excluir Produto: {id}");
                 throw;
             }
-           
+
         }
     }
 }

@@ -23,17 +23,12 @@ namespace APICatalogo5._0.Controllers
         {
             _context = context;
         }
-
-
         [HttpGet("saudacao/{nome}")]
         public ActionResult<string> GetSaudacao([FromServices] IServico servico, string nome)
         {
 
             return servico.Saudacao(nome);
         }
-
-
-
         [HttpGet("produtos")]
         public async Task<ActionResult<IEnumerable<Categoria>>> GetProdutosCategoriasAsync()
         {
@@ -48,7 +43,6 @@ namespace APICatalogo5._0.Controllers
             }
 
         }
-
         [HttpGet]
         public ActionResult<IEnumerable<Categoria>> Get()
         {
@@ -63,7 +57,6 @@ namespace APICatalogo5._0.Controllers
             }
 
         }
-
         [HttpGet("{id}", Name = "ObterCategoria")]
         public ActionResult<Categoria> Get(int id)
         {
@@ -87,7 +80,6 @@ namespace APICatalogo5._0.Controllers
             }
 
         }
-
         [HttpPost]
         public ActionResult Post([FromBody] Categoria categoria)
         {
@@ -104,7 +96,6 @@ namespace APICatalogo5._0.Controllers
             }
 
         }
-
         [HttpPut("{id}")]
         public ActionResult Put(int id, [FromBody] Categoria categoria)
         {
@@ -124,7 +115,6 @@ namespace APICatalogo5._0.Controllers
                 throw;
             }
         }
-
         [HttpDelete("{id}")]
         public ActionResult<Categoria> Delete(int id)
         {
