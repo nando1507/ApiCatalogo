@@ -8,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
 using APICatalogo5._0.Services;
+using APICatalogo5._0.Filter;
 
 namespace APICatalogo5._0
 {
@@ -21,6 +22,7 @@ namespace APICatalogo5._0
         public IConfiguration Configuration { get; }
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped<ApiLoggingFilter>();
             string sqlConnection = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(sqlConnection)
@@ -28,7 +30,7 @@ namespace APICatalogo5._0
             services.AddTransient<IServico, Servico>();
 
             services.AddControllers()
-                    .AddNewtonsoftJson(options => 
+                    .AddNewtonsoftJson(options =>
                     {
                         options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
                     });
@@ -46,6 +48,10 @@ namespace APICatalogo5._0
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "APICatalogo5._0 v1"));
+            }
+            else
+            {
+                app.UseHsts();
             }
 
             app.UseHttpsRedirection();
