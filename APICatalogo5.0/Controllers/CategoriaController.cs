@@ -19,11 +19,20 @@ namespace APICatalogo5._0.Controllers
         private readonly AppDbContext _context;
         private readonly IConfiguration _configuration;
 
-        public CategoriaController(AppDbContext context)
+        public CategoriaController(AppDbContext context, IConfiguration config)
         {
+            _configuration = config;
             _context = context;
         }
 
+        [HttpGet("autor")]
+
+        public string GetAutor()
+        {
+            var autor = _configuration["autor"];
+
+            return $"Autor: {autor}";
+        }
 
         [HttpGet("saudacao/{nome}")]
         public ActionResult<string> GetSaudacao([FromServices] IServico servico, string nome)
@@ -31,8 +40,6 @@ namespace APICatalogo5._0.Controllers
 
             return servico.Saudacao(nome);
         }
-
-
 
         [HttpGet("produtos")]
         public async Task<ActionResult<IEnumerable<Categoria>>> GetProdutosCategoriasAsync()

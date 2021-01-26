@@ -1,4 +1,5 @@
 ﻿using APICatalogo5._0.Context;
+using APICatalogo5._0.Filter;
 using APICatalogo5._0.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -22,6 +23,7 @@ namespace APICatalogo5._0.Controllers
         }
 
         [HttpGet]
+        [ServiceFilter(typeof(ApiLoggingFilter))]
         public ActionResult<IEnumerable<Produto>> Get()
         {
             try
