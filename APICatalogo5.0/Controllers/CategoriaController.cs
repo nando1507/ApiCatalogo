@@ -1,10 +1,12 @@
 ﻿using APICatalogo5._0.Context;
 using APICatalogo5._0.Models;
 using APICatalogo5._0.Services;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,17 +14,23 @@ using System.Threading.Tasks;
 
 namespace APICatalogo5._0.Controllers
 {
+    [Produces("application/json")]
     [Route("api/[controller]")]
     [ApiController]
     public class CategoriaController : ControllerBase
     {
         private readonly AppDbContext _context;
         private readonly IConfiguration _configuration;
+        private readonly ILogger _looger;
+        private readonly IMapper _mapper;
 
-        public CategoriaController(AppDbContext context, IConfiguration config)
+        public CategoriaController(AppDbContext context, IConfiguration config, IMapper mapper, ILogger<CategoriaController> logger)
         {
             _configuration = config;
             _context = context;
+            _mapper = mapper;
+            _looger = logger;
+
         }
 
         [HttpGet("autor")]
@@ -32,7 +40,7 @@ namespace APICatalogo5._0.Controllers
 
             return $"Autor: {autor}";
         }
-       
+
         [HttpGet("saudacao/{nome}")]
         public ActionResult<string> GetSaudacao([FromServices] IServico servico, string nome)
         {
@@ -42,6 +50,7 @@ namespace APICatalogo5._0.Controllers
         [HttpGet("produtos")]
         public async Task<ActionResult<IEnumerable<Categoria>>> GetProdutosCategoriasAsync()
         {
+            _looger.LogInformation("=========GET api/Categorias/Produtos ==========");
             try
             {
                 return await _context.Categorias.Include(X => X.Produtos).AsNoTracking().ToListAsync();
@@ -73,8 +82,10 @@ namespace APICatalogo5._0.Controllers
             try
             {
                 var categoria = _context.Categorias.AsNoTracking().FirstOrDefault(p => p.CategoriaId == id);
+                _looger.LogInformation($"=========GET api/Categorias/ID = {id}  ==========");
                 if (categoria == null)
                 {
+                    _looger.LogInformation($"=========GET api/Categorias/ID = {id} NOT FOUND ==========");
                     return NotFound($"A Categoria {id} não foi encontrada");
                 }
                 else

@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "xeHjIUOCuia35icMTwhtcnE/xUAkcCK8YYwJLCLtWLVv2EqgvTcDdQ6AX2hI+NuhF1lVxPsC2EvhKAr5EbOvrQ==",
+  "dgSpecHash": "NKfnW3TZLtt1mZ/bPQMcQQd9SIjrFr6LquEpQb5gJq/pPbNTVxsV4a8WGoTxS3DbKs6AMfG0vzcr7umhBX/30w==",
   "success": true,
   "projectFilePath": "C:\\Users\\nando\\source\\repos\\APICatalogo5.0\\APICatalogo5.0\\APICatalogo5.0.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\nando\\.nuget\\packages\\automapper\\10.1.1\\automapper.10.1.1.nupkg.sha512",
     "C:\\Users\\nando\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\nando\\.nuget\\packages\\microsoft.aspnetcore.html.abstractions\\2.2.0\\microsoft.aspnetcore.html.abstractions.2.2.0.nupkg.sha512",
     "C:\\Users\\nando\\.nuget\\packages\\microsoft.aspnetcore.jsonpatch\\5.0.2\\microsoft.aspnetcore.jsonpatch.5.0.2.nupkg.sha512",
@@ -109,7 +110,7 @@
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\system.private.datacontractserialization\\4.3.0\\system.private.datacontractserialization.4.3.0.nupkg.sha512",
     "C:\\Users\\nando\\.nuget\\packages\\system.private.uri\\4.3.2\\system.private.uri.4.3.2.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\system.reflection\\4.3.0\\system.reflection.4.3.0.nupkg.sha512",
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\system.reflection.emit\\4.3.0\\system.reflection.emit.4.3.0.nupkg.sha512",
+    "C:\\Users\\nando\\.nuget\\packages\\system.reflection.emit\\4.7.0\\system.reflection.emit.4.7.0.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\system.reflection.emit.ilgeneration\\4.3.0\\system.reflection.emit.ilgeneration.4.3.0.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\system.reflection.emit.lightweight\\4.3.0\\system.reflection.emit.lightweight.4.3.0.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\system.reflection.extensions\\4.3.0\\system.reflection.extensions.4.3.0.nupkg.sha512",

@@ -9,6 +9,9 @@ using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
 using APICatalogo5._0.Services;
 using APICatalogo5._0.Filter;
+using APICatalogo5._0.Extensions;
+using Microsoft.Extensions.Logging;
+using APICatalogo5._0.Logging;
 
 namespace APICatalogo5._0
 {
@@ -22,6 +25,7 @@ namespace APICatalogo5._0
         public IConfiguration Configuration { get; }
         public void ConfigureServices(IServiceCollection services)
         {
+
             services.AddScoped<ApiLoggingFilter>();
             string sqlConnection = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<AppDbContext>(options =>
@@ -41,7 +45,7 @@ namespace APICatalogo5._0
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
             if (env.IsDevelopment())
             {
@@ -49,6 +53,16 @@ namespace APICatalogo5._0
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "APICatalogo5._0 v1"));
             }
+            else
+            {
+                app.UseHsts(); 
+            }
+            loggerFactory.AddProvider(new CustomLoggerProvider(new CustomLoggerProviderConfiguration
+            {
+                LogLevel = LogLevel.Information
+            }));
+
+            app.ConfigureExceptionHandler();
 
             app.UseHttpsRedirection();
 
