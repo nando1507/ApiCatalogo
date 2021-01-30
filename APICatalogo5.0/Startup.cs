@@ -8,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
 using APICatalogo5._0.Services;
+using APICatalogo5._0.Filter;
 
 namespace APICatalogo5._0
 {
@@ -21,6 +22,7 @@ namespace APICatalogo5._0
         public IConfiguration Configuration { get; }
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped<ApiLoggingFilter>();
             string sqlConnection = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(sqlConnection)
