@@ -1,5 +1,6 @@
 ﻿using APICatalogo5._0.Context;
 using APICatalogo5._0.Models;
+using APICatalogo5._0.Repository;
 using APICatalogo5._0.Services;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
@@ -19,16 +20,17 @@ namespace APICatalogo5._0.Controllers
     [ApiController]
     public class CategoriaController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        //private readonly AppDbContext _context;
         private readonly IConfiguration _configuration;
         private readonly ILogger _looger;
-        private readonly IMapper _mapper;
+        //private readonly IMapper _mapper;
+        private readonly IUnitOfWork _context;
 
-        public CategoriaController(AppDbContext context, IConfiguration config, IMapper mapper, ILogger<CategoriaController> logger)
+        public CategoriaController(IUnitOfWork context ,/*AppDbContext context, IMapper mapper,*/IConfiguration config,  ILogger<CategoriaController> logger)
         {
             _configuration = config;
             _context = context;
-            _mapper = mapper;
+            //_mapper = mapper;
             _looger = logger;
 
         }
@@ -48,12 +50,12 @@ namespace APICatalogo5._0.Controllers
             return servico.Saudacao(nome);
         }
         [HttpGet("produtos")]
-        public async Task<ActionResult<IEnumerable<Categoria>>> GetProdutosCategoriasAsync()
+        public ActionResult<IEnumerable<Categoria>> GetProdutosCategorias()
         {
             _looger.LogInformation("=========GET api/Categorias/Produtos ==========");
             try
             {
-                return await _context.Categorias.Include(X => X.Produtos).AsNoTracking().ToListAsync();
+                return _context.categoriaRepository.GetCategoriasProdutos().ToList();
             }
             catch (Exception)
             {
@@ -67,7 +69,7 @@ namespace APICatalogo5._0.Controllers
         {
             try
             {
-                return _context.Categorias.AsNoTracking().ToList();
+                return _context.categoriaRepository.Get().ToList();
             }
             catch (Exception)
             {
@@ -81,7 +83,7 @@ namespace APICatalogo5._0.Controllers
         {
             try
             {
-                var categoria = _context.Categorias.AsNoTracking().FirstOrDefault(p => p.CategoriaId == id);
+                var categoria = _context.categoriaRepository.GetById(p => p.CategoriaId == id);
                 _looger.LogInformation($"=========GET api/Categorias/ID = {id}  ==========");
                 if (categoria == null)
                 {
@@ -106,8 +108,8 @@ namespace APICatalogo5._0.Controllers
         {
             try
             {
-                _context.Categorias.Add(categoria);
-                _context.SaveChanges();
+                _context.categoriaRepository.Add(categoria);
+                _context.commit();
                 return new CreatedAtRouteResult("ObterCategoria", new { id = categoria.CategoriaId }, categoria);
             }
             catch (Exception)
@@ -126,8 +128,8 @@ namespace APICatalogo5._0.Controllers
                 {
                     return BadRequest($"Nao Foi possivel atualizar a categoria de ID {id}");
                 }
-                _context.Entry(categoria).State = EntityState.Modified;
-                _context.SaveChanges();
+                _context.categoriaRepository.Update(categoria);
+                _context.commit();
                 return Ok();
             }
             catch (Exception)
@@ -141,15 +143,15 @@ namespace APICatalogo5._0.Controllers
         {
             try
             {
-                var categoria = _context.Categorias.FirstOrDefault(p => p.CategoriaId == id);
+                var categoria = _context.categoriaRepository.GetById(p => p.CategoriaId == id);
 
                 if (categoria == null)
                 {
                     return NotFound($"Erro ao localizar Categoria: {id}");
                 }
 
-                _context.Categorias.Remove(categoria);
-                _context.SaveChanges();
+                _context.categoriaRepository.Delete(categoria);
+                _context.commit();
                 return Ok();
             }
             catch (Exception)

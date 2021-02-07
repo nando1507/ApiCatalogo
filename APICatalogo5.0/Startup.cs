@@ -12,6 +12,7 @@ using APICatalogo5._0.Filter;
 using APICatalogo5._0.Extensions;
 using Microsoft.Extensions.Logging;
 using APICatalogo5._0.Logging;
+using APICatalogo5._0.Repository;
 
 namespace APICatalogo5._0
 {
@@ -27,6 +28,7 @@ namespace APICatalogo5._0
         {
 
             services.AddScoped<ApiLoggingFilter>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
             string sqlConnection = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(sqlConnection)

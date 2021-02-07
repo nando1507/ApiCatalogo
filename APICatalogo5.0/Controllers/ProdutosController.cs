@@ -1,6 +1,7 @@
 ﻿using APICatalogo5._0.Context;
 using APICatalogo5._0.Filter;
 using APICatalogo5._0.Models;
+using APICatalogo5._0.Repository;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -15,19 +16,28 @@ namespace APICatalogo5._0.Controllers
     [ApiController]
     public class ProdutosController : ControllerBase
     {
-        private readonly AppDbContext _context;
-
-        public ProdutosController(AppDbContext context)
+        private readonly IUnitOfWork _context;
+        //private readonly AppDbContext _context;
+        //public ProdutosController(AppDbContext context)
+        //{
+        //    _context = context;
+        //}
+        public ProdutosController(IUnitOfWork context)
         {
             _context = context;
         }
+        [HttpGet("ProdutosPreco")]
+        public ActionResult<IEnumerable<Produto>> GetProdutoPrecos()
+        {
+            return _context.ProdutoRepository.GetProdutosPorPreco().ToList();
+        } 
         [HttpGet]
         [ServiceFilter(typeof(ApiLoggingFilter))]
         public ActionResult<IEnumerable<Produto>> Get()
         {
             try
             {
-                return _context.Produtos.AsNoTracking().ToList();
+                return _context.ProdutoRepository.Get().ToList();
             }
             catch (Exception)
             {
@@ -41,7 +51,7 @@ namespace APICatalogo5._0.Controllers
         {
             try
             {
-                var produto = _context.Produtos.AsNoTracking().FirstOrDefault(p => p.ProdutoId == id);
+                var produto = _context.ProdutoRepository.GetById(p => p.ProdutoId == id);
                 if (produto == null)
                 {
                     return NotFound($"O Produto {id} não foi encontrado");
@@ -63,8 +73,8 @@ namespace APICatalogo5._0.Controllers
         {
             try
             {
-                _context.Produtos.Add(produto);
-                _context.SaveChanges();
+                _context.ProdutoRepository.Add(produto);
+                _context.commit();
 
                 return new CreatedAtRouteResult("ObterProduto", new { id = produto.ProdutoId }, produto);
             }
@@ -85,8 +95,8 @@ namespace APICatalogo5._0.Controllers
                     return BadRequest($"Nao Foi possivel atualizar o produto de ID {id}");
                 }
 
-                _context.Entry(produto).State = EntityState.Modified;
-                _context.SaveChanges();
+                _context.ProdutoRepository.Update(produto);
+                _context.commit();
                 return Ok();
             }
             catch (Exception)
@@ -99,18 +109,17 @@ namespace APICatalogo5._0.Controllers
         [HttpDelete("{id}")]
         public ActionResult<Produto> Delete(int id)
         {
-
             try
             {
-                var produto = _context.Produtos.FirstOrDefault(p => p.ProdutoId == id);
+                var produto = _context.ProdutoRepository.GetById(p => p.ProdutoId == id);
 
                 if (produto == null)
                 {
                     return NotFound($"Erro ao localizar Produto: {id}");
                 }
 
-                _context.Produtos.Remove(produto);
-                _context.SaveChanges();
+                _context.ProdutoRepository.Delete(produto);
+                _context.commit();
                 return Ok();
             }
             catch (Exception)
@@ -122,4 +131,3 @@ namespace APICatalogo5._0.Controllers
         }
     }
 }
- 
